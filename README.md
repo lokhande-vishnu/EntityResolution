@@ -7,6 +7,8 @@ In this paper, we introduce a new optimization approach to Entity Resolution. Tr
 Link to arxiv is https://arxiv.org/abs/1909.05460
 
 ## Other Project particulars
-Slides - "slides_AAAI20.pdf" 
+Slides - "slides_AAAI20.pdf"
+
 Poster - "poster_AAAI20.pdf"
+
 AAAI Paper - "AAAI-LokhandeV.2787.pdf"

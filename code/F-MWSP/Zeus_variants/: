@@ -1,0 +1,54 @@
+
+
+function [max_val,max_trip,DOI]=person_doi_rotate(G,C,this_col,DOI,r)
+
+%Purpose
+%
+%	Calculate varying DOI
+%
+%Input
+%
+%	usual form
+%
+%OUTput
+%
+%	usual form
+%	DOI.Q{r} has entry for each {r}
+%		DOI.Q.r when multiplied by input vector which has unary, pairwise activationi
+%	
+
+%get indexes for max val (Xi) computation
+
+if(~isfield(DOI,'Q'))
+	disp('doing')	
+	DOI.Q=cell(G.opt.num_rotations_doi,1);
+	for(r=1:G.opt.num_rotations_doi)
+		DOI.Q{r}=construct_matrix_rotation_person( G,DOI,r  );
+		DOI.max_val_list(:,r)=-G.Q.unary(:);%-min([0,G.Q.offset]);
+		DOI.max_val(G.Q.F.B.dets_of_fixed)=abs(G.Q.min_poss_term);
+		
+	end
+	
+end
+
+
+my_pair_vec=[this_col(G.Q.E(:,1)).*this_col(G.Q.E(:,2))];
+max_val=-G.Q.unary(:)+DOI.Q{r}*my_pair_vec;
+
+
+
+%make that the max value is infinite if thats the center
+%initialize triples storage system
+num_trip=size(C.c3_list,1);
+max_trip=zeros(num_trip,1);
+for(c=1:num_trip)       %itterate over triples.  I am lazy so im just using the bound from the smallest two which is sufficeint
+	if(1.5<sum(this_col(   C.c3_list(c,:)  )))
+		tmp=sort(this_col(C.c3_list(c,:))'.*max_val(C.c3_list(c,:)));
+		%grab the smallest two elements
+		max_trip(c)=tmp(1)+tmp(2);
+                        
+	end
+end
+
+
+
